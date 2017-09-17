@@ -1,3 +1,11 @@
 language: java
 jdk:
+  - oraclejdk7
   - oraclejdk8
+
+notifications:
+  email:
+    recicpients:
+      - rf.nonato@gmail.com
+    on_success: change
+    on_failure: always

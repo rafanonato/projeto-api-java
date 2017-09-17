@@ -32,8 +32,8 @@ public class Funcionarios implements Serializable {
 
     public Funcionarios(){
 
-
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -113,6 +113,8 @@ public class Funcionarios implements Serializable {
         this.horasAlmoco = horasAlmoco;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "perfil", nullable = false)
     public PerfilEnum getPerfil() {
         return perfil;
     }
@@ -121,6 +123,7 @@ public class Funcionarios implements Serializable {
         this.perfil = perfil;
     }
 
+    @Column(name = "dataCriacao", nullable = false)
     public Date getDataCriacao() {
         return dataCriacao;
     }
@@ -129,6 +132,7 @@ public class Funcionarios implements Serializable {
         this.dataCriacao = dataCriacao;
     }
 
+    @Column(name = "dataAtualizacao", nullable = false)
     public Date getDataAtualizacao() {
         return dataAtualizacao;
     }
@@ -137,6 +141,8 @@ public class Funcionarios implements Serializable {
         this.dataAtualizacao = dataAtualizacao;
     }
 
+
+    @ManyToOne(fetch = FetchType.EAGER)
     public com.api.java.entities.Empresa getEmpresa() {
         return Empresa;
     }
@@ -145,11 +151,45 @@ public class Funcionarios implements Serializable {
         Empresa = empresa;
     }
 
+    @OneToMany(mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Lancamentos> getLancamentos() {
         return lancamentos;
     }
 
     public void setLancamentos(List<Lancamentos> lancamentos) {
         this.lancamentos = lancamentos;
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+
+        Date dataAtualização = new Date();
+
+    }
+
+    @PrePersist
+    public void prePersist(){
+        final Date atual = new Date();
+        dataCriacao = atual;
+        Date dataAtualização = atual;
+    }
+
+    @Override
+    public String toString() {
+        return "Funcionarios{" +
+                "id=" + id +
+                ", Nome='" + Nome + '\'' +
+                ", email='" + email + '\'' +
+                ", Senha='" + Senha + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", valorHora=" + valorHora +
+                ", horasTrabalhadas=" + horasTrabalhadas +
+                ", horasAlmoco=" + horasAlmoco +
+                ", perfil=" + perfil +
+                ", dataCriacao=" + dataCriacao +
+                ", dataAtualizacao=" + dataAtualizacao +
+                ", Empresa=" + Empresa +
+                ", lancamentos=" + lancamentos +
+                '}';
     }
 }
